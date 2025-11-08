@@ -178,7 +178,7 @@ export const LoginPage = () => {
               <CardHeader className="space-y-2 pb-6">
                 <div className="lg:hidden mb-4">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    Welcome to <span className="bg-gradient-primary bg-clip-text text-transparent">ContentFlow</span>
+                    Welcome to <span className="font-logo text-primary">Trendle</span>
                   </h1>
                 </div>
                 <CardTitle className="text-2xl font-bold text-foreground">Sign in to your account</CardTitle>
