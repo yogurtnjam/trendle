@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +26,8 @@ export const LoginPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast.success(`Successfully connected to ${provider}!`);
+      // Redirect to home page after successful login
+      setTimeout(() => navigate('/'), 500);
     }, 1500);
   };
 
@@ -43,6 +46,8 @@ export const LoginPage = () => {
         description: 'Welcome back to your content creation hub.'
       });
       setIsLoading(false);
+      // Redirect to home page after successful login
+      setTimeout(() => navigate('/'), 500);
     }, 1000);
   };
 
