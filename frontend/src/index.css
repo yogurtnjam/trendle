@@ -133,16 +133,42 @@ code {
     }
     
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Playfair Display', serif;
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+    }
+    
+    h2 {
+        font-size: 2.5rem;
         font-weight: 700;
     }
     
+    h3 {
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+    
+    p, span, div {
+        font-family: 'Bodoni Moda', serif;
+    }
+    
     .font-display {
-        font-family: 'Playfair Display', serif;
+        font-family: 'Bodoni Moda', serif;
+    }
+    
+    .font-script {
+        font-family: 'Pinyon Script', cursive;
+        font-size: 1.2em;
+        font-weight: 400;
     }
     
     .font-sans {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Bodoni Moda', serif;
     }
 }
 
