@@ -290,10 +290,11 @@ code {
 
 /* Scribble Annotation */
 .scribble-note {
-    font-family: 'Caveat', cursive;
+    font-family: 'Pinyon Script', cursive;
     color: hsl(var(--cobalt-accent));
     opacity: 0;
     transition: opacity 0.3s ease;
+    font-size: 1.1em;
 }
 
 .group:hover .scribble-note {
