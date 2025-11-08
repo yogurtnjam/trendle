@@ -291,7 +291,7 @@ export const LandingPage = () => {
               <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
                 <Video className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-display font-bold text-foreground">ContentFlow</span>
+              <span className="text-lg font-logo font-bold text-foreground">Trendle</span>
             </div>
             <div className="flex gap-6 text-sm text-muted-foreground font-sans">
               <button className="hover:text-foreground transition-colors">Privacy</button>
