@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from './ui/separator';
 import { Eye, EyeOff, Sparkles, TrendingUp, BarChart3, Zap } from 'lucide-react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
