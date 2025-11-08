@@ -19,7 +19,7 @@ export const LandingPage = () => {
     {
       icon: <Wand2 className="w-6 h-6" />,
       title: 'Coach the Cut',
-      description: 'Get real-time suggestions on hooks, beats, pacing, and captions to match what's working now.',
+      description: 'Get real-time suggestions on hooks, beats, pacing, and captions to match what is working now.',
       color: 'bg-secondary',
       badge: '⚡ AI-Powered'
     },
