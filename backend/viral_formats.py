@@ -4,7 +4,7 @@ Contains templates for viral video formats (Cluely, YC demos, etc.)
 """
 
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 
 
