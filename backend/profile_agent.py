@@ -1,13 +1,10 @@
 """
-ProfileAgent using LangChain with custom tools for user profiling.
+ProfileAgent using LangChain tools with custom tools for user profiling.
 This agent extracts target customer, product, audience, platform, and vibes information
 from user conversations with minimal back-and-forth.
 """
 
-from langchain.agents import AgentExecutor, create_tool_calling_agent
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.tools import tool
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.tools import tool
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from motor.motor_asyncio import AsyncIOMotorDatabase
 import os
