@@ -64,7 +64,7 @@ export const WorkspaceEnhanced = () => {
         // Add welcome message if no history
         setMessages([{
           role: 'assistant',
-          content: '👋 Hey there! I\'m your AI content strategist. Upload a video, tell me about your content goals, and I\'ll analyze it against trending formats to give you actionable suggestions.',
+          content: '🎬 Hey! I\'m your personal director. Tell me what you want to create, upload your footage, and I\'ll guide you on what to film, where to cut (pauses, filler words), and which trending audio to use.',
           timestamp: new Date()
         }]);
       }
@@ -72,7 +72,7 @@ export const WorkspaceEnhanced = () => {
       console.error('Error loading chat history:', error);
       setMessages([{
         role: 'assistant',
-        content: '👋 Hey there! I\'m your AI content strategist. Upload a video and let\'s make it viral!',
+        content: '🎬 Hey! I\'m your personal director. Upload footage or tell me your content idea, and I\'ll help you create viral content!',
         timestamp: new Date()
       }]);
     }
