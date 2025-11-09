@@ -24,14 +24,11 @@ async def get_session_from_db(db: AsyncIOMotorDatabase, session_id: str) -> Opti
 async def save_session_to_db(db: AsyncIOMotorDatabase, session_data: Dict[str, Any]):
     """Save or update session in MongoDB"""
     session_data['updated_at'] = datetime.now(timezone.utc).isoformat()
-    print(f"DEBUG: Saving session to DB: {session_data['session_id']}")
-    print(f"DEBUG: Profile data being saved: {session_data.get('profile_data', {})}")
-    result = await db.profile_sessions.update_one(
+    await db.profile_sessions.update_one(
         {"session_id": session_data["session_id"]},
         {"$set": session_data},
         upsert=True
     )
-    print(f"DEBUG: Save result - matched: {result.matched_count}, modified: {result.modified_count}, upserted: {result.upserted_id}")
 
 
 # Profile Agent Tools (converted from LangChain tools to regular functions)
