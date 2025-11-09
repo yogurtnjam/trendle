@@ -173,10 +173,7 @@ export const Workspace = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <button onClick={() => navigate('/')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-sm">
-                <Video className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-logo font-bold text-foreground">Trendle</span>
+              <span className="text-3xl font-logo font-bold text-foreground">Trendle</span>
             </button>
             <div className="flex items-center gap-4">
               <Badge className="hidden sm:flex bg-accent/20 text-foreground border-accent/30 hover:bg-accent/30 font-sans">
