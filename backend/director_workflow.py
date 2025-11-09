@@ -200,6 +200,9 @@ Ready to move forward with this format?"""
         else:
             state["messages"].append(AIMessage(content="I couldn't find a perfect format match. Let me create a custom format for you..."))
         
+        # Save project state to database
+        await self._save_project_state(state)
+        
         return state
     
     async def script_planner_agent(self, state: DirectorState) -> DirectorState:
