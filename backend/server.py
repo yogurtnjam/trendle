@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -10,6 +10,10 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
 from profile_agent import ProfileAgent
+from director_workflow import DirectorWorkflow, DirectorState
+from viral_formats import seed_viral_formats
+from langchain_core.messages import HumanMessage
+import shutil
 
 
 ROOT_DIR = Path(__file__).parent
