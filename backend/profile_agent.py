@@ -167,8 +167,6 @@ async def save_profile_data(
         updated_fields.append("vibes")
     
     session["profile_data"] = profile_data
-    print(f"DEBUG: Updated profile_data: {profile_data}")
-    print(f"DEBUG: Updated fields: {updated_fields}")
     
     # Recalculate confidence scores based on updated profile_data
     scores = {}
@@ -187,10 +185,8 @@ async def save_profile_data(
     scores["overall"] = sum(scores.values()) / 5 if scores else 0
     
     session["confidence_scores"] = scores
-    print(f"DEBUG: Calculated scores: {scores}")
     
     await save_session_to_db(db, session)
-    print(f"DEBUG: Session saved to DB")
     
     return {
         "status": "success",
