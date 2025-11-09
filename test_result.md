@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the login page functionality for ContentFlow - a content creation platform"
+user_problem_statement: "Build a LangChain ProfileAgent using Claude Sonnet 4.5 with Emergent LLM key. The agent should use custom tools (calculate_confidence_score, check_confidence_score, save_profile_data, get_profile_data, generate_summary) to extract user profile information (target_customer, product, audience, platform, vibes) through conversation. Store session data in MongoDB and provide API endpoints for chat interaction."
 
 frontend:
   - task: "Landing Page Navigation"
