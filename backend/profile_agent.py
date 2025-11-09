@@ -417,10 +417,13 @@ Your Response:"""
             summary_result = await generate_summary(session_id, self.db)
             summary_status = summary_result.get("status")
         
-        # Add agent response to conversation history
-        conversation_history.append({"role": "assistant", "content": agent_response})
-        session["conversation_history"] = conversation_history
-        await save_session_to_db(self.db, session)
+        # Get updated session data after extraction and add agent response to conversation history
+        updated_session = await get_session_from_db(self.db, session_id)
+        if updated_session:
+            conversation_history.append({"role": "assistant", "content": agent_response})
+            updated_session["conversation_history"] = conversation_history
+            await save_session_to_db(self.db, updated_session)
+            profile_data = updated_session.get("profile_data", {})
         
         return {
             "message": agent_response,
