@@ -178,7 +178,6 @@ async def save_profile_data(
     }
 
 
-@tool
 async def get_profile_data(session_id: str, db: AsyncIOMotorDatabase) -> Dict[str, Any]:
     """
     Retrieves current profile data from MongoDB for the session.
