@@ -28,11 +28,12 @@ class AIContentAnalyzer:
                 "Your advice is practical, specific, and optimized for virality. "
                 "Always structure your suggestions as JSON with clear reasoning."
             )
+            # Use GPT-4 as fallback due to GPT-5 timeout issues in 2025
             self.session_chats[session_id] = LlmChat(
                 api_key=self.api_key,
                 session_id=session_id,
                 system_message=system_message or default_system
-            ).with_model("openai", "gpt-5")
+            ).with_model("openai", "gpt-4")
         
         return self.session_chats[session_id]
     
