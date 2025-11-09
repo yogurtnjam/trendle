@@ -6,7 +6,8 @@ import { Badge } from './ui/badge';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { 
   Sparkles, Upload, X, Send, Video, CheckCircle, XCircle, 
-  TrendingUp, Wand2, Zap, Loader2, AlertCircle, ThumbsUp, ThumbsDown
+  TrendingUp, Wand2, Zap, Loader2, AlertCircle, ThumbsUp, ThumbsDown,
+  Clock, Scissors
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ import {
   getChatHistory,
   handleSuggestionAction
 } from '../utils/api';
+import { VideoTimeline } from './VideoTimeline';
 
 export const WorkspaceEnhanced = () => {
   const navigate = useNavigate();
