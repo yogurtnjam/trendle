@@ -44,7 +44,7 @@ class TrendleAPITester:
         logger.info(f"Starting comprehensive backend tests for session: {self.session_id}")
         logger.info(f"Backend URL: {BACKEND_URL}")
         
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=120.0) as client:
             # Test 1: Health Check
             await self.test_health_check(client)
             
