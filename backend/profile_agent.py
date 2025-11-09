@@ -132,8 +132,10 @@ async def save_profile_data(
     Returns:
         Success message with updated fields
     """
+    print(f"DEBUG: save_profile_data called for session {session_id}")
     session = await get_session_from_db(db, session_id)
     if not session:
+        print(f"DEBUG: Creating new session for {session_id}")
         # Create new session if it doesn't exist
         session = {
             "session_id": session_id,
@@ -143,8 +145,11 @@ async def save_profile_data(
             "profile_summary": "",
             "created_at": datetime.now(timezone.utc).isoformat()
         }
+    else:
+        print(f"DEBUG: Found existing session for {session_id}")
     
     profile_data = session.get("profile_data", {})
+    print(f"DEBUG: Current profile_data: {profile_data}")
     updated_fields = []
     
     if target_customer is not None:
@@ -164,12 +169,16 @@ async def save_profile_data(
         updated_fields.append("vibes")
     
     session["profile_data"] = profile_data
+    print(f"DEBUG: Updated profile_data: {profile_data}")
+    print(f"DEBUG: Updated fields: {updated_fields}")
     
     # Recalculate confidence scores
     scores = await calculate_confidence_score(session_id, db)
     session["confidence_scores"] = scores
+    print(f"DEBUG: Calculated scores: {scores}")
     
     await save_session_to_db(db, session)
+    print(f"DEBUG: Session saved to DB")
     
     return {
         "status": "success",
