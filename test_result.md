@@ -357,12 +357,7 @@ metadata:
   last_tested: "2025-01-09"
 
 test_plan:
-  current_focus:
-    - "Video Upload API Endpoints"
-    - "OpenAI GPT-5 AI Service Integration"
-    - "Video Upload Service (Chunked Upload)"
-    - "Suggestions Management API"
-    - "Chat API with AI Context"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
