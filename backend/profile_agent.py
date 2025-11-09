@@ -4,7 +4,7 @@ This agent extracts target customer, product, audience, platform, and vibes info
 from user conversations with minimal back-and-forth.
 """
 
-from langchain_core.tools import tool
+# Removed langchain_core.tools import - using regular functions instead
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from motor.motor_asyncio import AsyncIOMotorDatabase
 import os
