@@ -427,7 +427,7 @@ class DirectorSystemTester:
 
 def main():
     """Main test execution"""
-    tester = ProfileAgentTester()
+    tester = DirectorSystemTester()
     success = tester.run_all_tests()
     sys.exit(0 if success else 1)
 
