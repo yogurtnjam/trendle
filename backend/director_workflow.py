@@ -239,6 +239,9 @@ I'll guide you through recording each segment step by step. Ready to start?"""
         
         state["messages"].append(AIMessage(content=shot_list_message))
         
+        # Save project state to database
+        await self._save_project_state(state)
+        
         return state
     
     async def recording_guide_agent(self, state: DirectorState) -> DirectorState:
