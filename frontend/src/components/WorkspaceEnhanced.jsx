@@ -256,6 +256,11 @@ export const WorkspaceEnhanced = () => {
       return;
     }
 
+    // Activate workspace on first interaction
+    if (!isWorkspaceActive) {
+      setIsWorkspaceActive(true);
+    }
+
     // If video is uploaded but not analyzed yet, trigger analysis
     if (uploadedVideo && currentSuggestions.length === 0) {
       handleAnalyzeVideo();
