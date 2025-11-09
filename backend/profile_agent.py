@@ -468,13 +468,9 @@ Your Response:"""
             extracted_data["target_customer"] = user_message[:100]
         
         # Save any extracted data
-        print(f"DEBUG: Extracted data: {extracted_data}")
         if extracted_data:
-            print(f"DEBUG: Saving extracted data: {extracted_data}")
             await save_profile_data(
                 session_id=session_id,
                 db=self.db,
                 **extracted_data
             )
-        else:
-            print("DEBUG: No data extracted")
