@@ -173,7 +173,7 @@ export const Workspace = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <button onClick={() => navigate('/')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <span className="text-3xl font-logo font-bold text-foreground">Trendle</span>
+              <span className="text-5xl font-logo font-bold text-foreground">Trendle</span>
             </button>
             <div className="flex items-center gap-4">
               <Badge className="hidden sm:flex bg-accent/20 text-foreground border-accent/30 hover:bg-accent/30 font-sans">
