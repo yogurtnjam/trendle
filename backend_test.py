@@ -301,67 +301,85 @@ class DirectorSystemTester:
             self.log_test("Get Project Details", False, f"Unexpected error: {str(e)}")
             return False
     
-    def test_4_retrieve_session_data(self):
-        """Test 4: Retrieve Session Data"""
-        print("=== Test 4: Retrieve Session Data ===")
-        
-        if not self.session_id:
-            self.log_test("Retrieve Session Data", False, "No session_id available")
-            return False
+    def test_4_verify_viral_formats_seeded(self):
+        """Test 4: Verify Viral Formats Seeded - Tests database seeding"""
+        print("=== Test 4: Verify Viral Formats Seeded ===")
         
         try:
+            # Test by creating another project with different parameters
+            # This will trigger format matching and verify formats are available
+            payload = {
+                "user_goal": "I want to create a fast-paced product launch video like Cluely",
+                "product_type": "consumer app",
+                "target_platform": "TikTok"
+            }
+            
             # Make request
-            response = requests.get(
-                f"{BACKEND_URL}/chat/session/{self.session_id}",
-                timeout=30
+            response = requests.post(
+                f"{BACKEND_URL}/director/project",
+                json=payload,
+                headers={"Content-Type": "application/json"},
+                timeout=60
             )
             
             # Check status code
             if response.status_code != 200:
-                self.log_test("Retrieve Session Data", False, 
+                self.log_test("Verify Viral Formats Seeded", False, 
                             f"Expected status 200, got {response.status_code}. Response: {response.text}")
                 return False
             
             # Parse response
             data = response.json()
             
-            # Validate session data structure
-            required_fields = ["session_id", "profile_data", "confidence_scores", "conversation_history"]
-            missing_fields = [field for field in required_fields if field not in data]
-            if missing_fields:
-                self.log_test("Retrieve Session Data", False, 
-                            f"Missing required fields: {missing_fields}")
+            # Validate matched_format is present
+            if "matched_format" not in data or not data["matched_format"]:
+                self.log_test("Verify Viral Formats Seeded", False, 
+                            f"No format matched - viral formats may not be seeded properly")
                 return False
             
-            # Validate session_id matches
-            if data["session_id"] != self.session_id:
-                self.log_test("Retrieve Session Data", False, 
-                            f"Session ID mismatch. Expected: {self.session_id}, Got: {data['session_id']}")
+            matched_format = data["matched_format"]
+            
+            # Should match Cluely Launch format for TikTok consumer app
+            expected_format_id = "cluely_launch"
+            if matched_format.get("format_id") != expected_format_id:
+                # Check if it's at least a valid format
+                valid_format_ids = ["yc_demo_classic", "cluely_launch", "educational_tutorial", "before_after_transformation"]
+                if matched_format.get("format_id") not in valid_format_ids:
+                    self.log_test("Verify Viral Formats Seeded", False, 
+                                f"Invalid format_id: {matched_format.get('format_id')}")
+                    return False
+            
+            # Validate format structure
+            required_format_fields = ["format_id", "name", "description", "platform_fit", "structure"]
+            missing_format_fields = [field for field in required_format_fields if field not in matched_format]
+            if missing_format_fields:
+                self.log_test("Verify Viral Formats Seeded", False, 
+                            f"Format missing fields: {missing_format_fields}")
                 return False
             
-            # Check that conversation history is populated
-            conversation_history = data["conversation_history"]
-            if not conversation_history or len(conversation_history) < 2:
-                self.log_test("Retrieve Session Data", False, 
-                            f"Conversation history should have at least 2 messages, got: {len(conversation_history)}")
+            # Validate structure has segments
+            structure = matched_format.get("structure", [])
+            if not structure or len(structure) < 3:
+                self.log_test("Verify Viral Formats Seeded", False, 
+                            f"Format structure should have at least 3 segments, got: {len(structure)}")
                 return False
             
-            # Check that profile_data has some information
-            profile_data = data["profile_data"]
-            if not profile_data:
-                self.log_test("Retrieve Session Data", False, 
-                            "Profile data should contain some extracted information")
+            # Validate platform fit includes TikTok
+            platform_fit = matched_format.get("platform_fit", [])
+            if "TikTok" not in platform_fit:
+                self.log_test("Verify Viral Formats Seeded", False, 
+                            f"Format should support TikTok, platform_fit: {platform_fit}")
                 return False
             
-            self.log_test("Retrieve Session Data", True, 
-                        f"Session data retrieved successfully. Profile fields: {list(profile_data.keys())}")
+            self.log_test("Verify Viral Formats Seeded", True, 
+                        f"Viral formats properly seeded. Matched: {matched_format['name']} ({matched_format['format_id']})")
             return True
             
         except requests.exceptions.RequestException as e:
-            self.log_test("Retrieve Session Data", False, f"Request failed: {str(e)}")
+            self.log_test("Verify Viral Formats Seeded", False, f"Request failed: {str(e)}")
             return False
         except Exception as e:
-            self.log_test("Retrieve Session Data", False, f"Unexpected error: {str(e)}")
+            self.log_test("Verify Viral Formats Seeded", False, f"Unexpected error: {str(e)}")
             return False
     
     def run_all_tests(self):
