@@ -32,25 +32,29 @@ class DirectorSystemTester:
         })
         print()
     
-    def test_1_create_chat_session(self):
-        """Test 1: Create Chat Session"""
-        print("=== Test 1: Create Chat Session ===")
+    def test_1_create_video_project(self):
+        """Test 1: Create Video Project - Tests Director workflow initialization"""
+        print("=== Test 1: Create Video Project ===")
         
         try:
-            # Test data
-            payload = {"user_id": "sarah_entrepreneur_123"}
+            # Test data - YC-style demo video request
+            payload = {
+                "user_goal": "I want to create a YC-style demo video for my AI language learning app",
+                "product_type": "b2b saas",
+                "target_platform": "YouTube"
+            }
             
             # Make request
             response = requests.post(
-                f"{BACKEND_URL}/chat/session",
+                f"{BACKEND_URL}/director/project",
                 json=payload,
                 headers={"Content-Type": "application/json"},
-                timeout=30
+                timeout=60  # Longer timeout for LLM processing
             )
             
             # Check status code
             if response.status_code != 200:
-                self.log_test("Create Chat Session", False, 
+                self.log_test("Create Video Project", False, 
                             f"Expected status 200, got {response.status_code}. Response: {response.text}")
                 return False
             
@@ -58,39 +62,66 @@ class DirectorSystemTester:
             data = response.json()
             
             # Validate response structure
-            if "session_id" not in data or "created_at" not in data:
-                self.log_test("Create Chat Session", False, 
-                            f"Missing required fields. Response: {data}")
+            required_fields = ["project_id", "message", "current_step"]
+            missing_fields = [field for field in required_fields if field not in data]
+            if missing_fields:
+                self.log_test("Create Video Project", False, 
+                            f"Missing required fields: {missing_fields}. Response: {data}")
                 return False
             
-            # Validate session_id is UUID format
+            # Validate project_id is UUID format
             try:
-                uuid.UUID(data["session_id"])
+                uuid.UUID(data["project_id"])
             except ValueError:
-                self.log_test("Create Chat Session", False, 
-                            f"session_id is not a valid UUID: {data['session_id']}")
+                self.log_test("Create Video Project", False, 
+                            f"project_id is not a valid UUID: {data['project_id']}")
                 return False
             
-            # Validate created_at is ISO timestamp
-            try:
-                datetime.fromisoformat(data["created_at"].replace('Z', '+00:00'))
-            except ValueError:
-                self.log_test("Create Chat Session", False, 
-                            f"created_at is not a valid ISO timestamp: {data['created_at']}")
+            # Validate agent message exists and mentions format matching
+            agent_message = data["message"]
+            if not agent_message or len(agent_message.strip()) < 10:
+                self.log_test("Create Video Project", False, 
+                            f"Agent response too short or empty: '{agent_message}'")
                 return False
             
-            # Store session_id for subsequent tests
-            self.session_id = data["session_id"]
+            # Check for format matching keywords
+            message_lower = agent_message.lower()
+            format_keywords = ["format", "yc", "demo", "classic", "viral"]
+            if not any(keyword in message_lower for keyword in format_keywords):
+                self.log_test("Create Video Project", False, 
+                            f"Agent response doesn't mention format matching: '{agent_message}'")
+                return False
             
-            self.log_test("Create Chat Session", True, 
-                        f"Session created successfully. ID: {self.session_id}")
+            # Validate matched_format is present (should be YC Demo Classic)
+            if "matched_format" not in data or not data["matched_format"]:
+                self.log_test("Create Video Project", False, 
+                            f"matched_format should be present after format matching")
+                return False
+            
+            matched_format = data["matched_format"]
+            if matched_format.get("format_id") != "yc_demo_classic":
+                self.log_test("Create Video Project", False, 
+                            f"Expected YC Demo Classic format, got: {matched_format.get('format_id')}")
+                return False
+            
+            # Validate current_step progression
+            if data["current_step"] not in ["format_matched", "script_planned"]:
+                self.log_test("Create Video Project", False, 
+                            f"Expected current_step to be format_matched or script_planned, got: {data['current_step']}")
+                return False
+            
+            # Store project_id for subsequent tests
+            self.project_id = data["project_id"]
+            
+            self.log_test("Create Video Project", True, 
+                        f"Project created successfully. ID: {self.project_id}, Format: {matched_format['name']}")
             return True
             
         except requests.exceptions.RequestException as e:
-            self.log_test("Create Chat Session", False, f"Request failed: {str(e)}")
+            self.log_test("Create Video Project", False, f"Request failed: {str(e)}")
             return False
         except Exception as e:
-            self.log_test("Create Chat Session", False, f"Unexpected error: {str(e)}")
+            self.log_test("Create Video Project", False, f"Unexpected error: {str(e)}")
             return False
     
     def test_2_send_first_message(self):
