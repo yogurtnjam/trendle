@@ -619,8 +619,47 @@ export const WorkspaceEnhanced = () => {
                             )}
                           </div>
                           <p className="text-sm text-muted-foreground mb-2 font-sans">{suggestion.description}</p>
+                          
+                          {/* Special display for example videos */}
+                          {suggestion.type === 'example_video' && suggestion.video_url && (
+                            <div className="mb-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
+                                  Example Video
+                                </Badge>
+                                {suggestion.metrics && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {suggestion.metrics}
+                                  </Badge>
+                                )}
+                              </div>
+                              {suggestion.creator && (
+                                <p className="text-sm font-semibold text-foreground mb-1">
+                                  By: {suggestion.creator}
+                                </p>
+                              )}
+                              <a
+                                href={suggestion.video_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-primary hover:text-primary/80 underline break-all"
+                              >
+                                🔗 Watch on TikTok
+                              </a>
+                            </div>
+                          )}
+                          
+                          {/* Special display for audio/BGM */}
+                          {(suggestion.type === 'audio' || suggestion.type === 'bgm') && (
+                            <div className="mb-3 p-3 bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200/50 dark:border-purple-800/50 rounded-lg">
+                              <Badge className="bg-purple-100 text-purple-700 border-purple-300 text-xs mb-2">
+                                🎵 Trending Audio
+                              </Badge>
+                            </div>
+                          )}
+                          
                           <div className="bg-muted/30 rounded-lg p-3 mb-2">
-                            <p className="text-sm text-foreground font-mono">{suggestion.content}</p>
+                            <p className="text-sm text-foreground font-sans leading-relaxed">{suggestion.content}</p>
                           </div>
                           <div className="flex items-center justify-between">
                             <p className="text-xs text-muted-foreground italic font-sans">💡 {suggestion.reasoning}</p>
