@@ -608,11 +608,11 @@ export const WorkspaceEnhanced = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          )}
+                </Card>
+              )}
 
-          {/* Chat Messages */}
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+              {/* Chat Messages */}
+              <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.1s' }}>
             {messages.map((message, index) => (
               <div key={index} className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {(message.role === 'assistant' || message.role === 'system') && (
