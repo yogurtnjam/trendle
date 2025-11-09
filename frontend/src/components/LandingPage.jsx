@@ -264,14 +264,12 @@ export const LandingPage = () => {
           <p className="text-xl opacity-90 mb-10 font-sans">
             Join thousands of creators using AI to make content that actually performs.
           </p>
-          <Button 
-            size="lg"
+          <button 
             onClick={handleGetStarted}
-            className="bg-accent text-ink-black hover:bg-accent/90 text-lg h-14 px-10 font-sans font-semibold shadow-glow-neon group"
+            className="px-10 py-4 rounded-xl bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-xl group"
           >
-            Get Early Access
-            <Sparkles className="w-5 h-5 ml-2 group-hover:rotate-12 transition-transform" />
-          </Button>
+            <span className="marker-highlight-small text-foreground text-lg">Get Early Access</span>
+          </button>
           <p className="text-sm opacity-70 mt-6 font-sans">No credit card required • Free forever plan</p>
         </div>
       </section>
