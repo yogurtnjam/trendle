@@ -196,7 +196,6 @@ async def get_profile_data(session_id: str, db: AsyncIOMotorDatabase) -> Dict[st
     return session.get("profile_data", {})
 
 
-@tool
 async def generate_summary(session_id: str, db: AsyncIOMotorDatabase) -> Dict[str, Any]:
     """
     Generates a final summary of the user's profile when all confidence thresholds are met.
