@@ -146,15 +146,18 @@ backend:
 
   - task: "Video Upload Service (Chunked Upload)"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/services/video_service.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented chunked video upload service with local filesystem storage in /app/backend/uploads. Handles base64 encoded chunks, assembles complete file. Needs testing with actual upload."
+      - working: true
+        agent: "testing"
+        comment: "Chunked video upload service working correctly. Successfully tested multi-chunk upload flow with base64 encoding. Files properly assembled and stored in /app/backend/uploads. Video metadata saved to MongoDB with correct file info."
 
   - task: "Video Upload API Endpoints"
     implemented: true
