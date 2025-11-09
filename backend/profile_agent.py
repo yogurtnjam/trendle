@@ -405,7 +405,6 @@ Your Response:"""
         agent_response = await self.llm_chat.send_message(llm_message)
         
         # Extract information from the conversation using simple heuristics
-        print(f"DEBUG: Extracting info from message: {user_message}")
         await self._extract_and_save_info(session_id, user_message, agent_response)
         
         # Recalculate confidence
