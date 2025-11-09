@@ -284,8 +284,27 @@ export const Workspace = () => {
                 <div className="flex-1">
                   <h2 className="text-3xl font-display font-bold text-foreground mb-2">Your AI Content Studio</h2>
                   <p className="text-muted-foreground leading-relaxed text-lg font-sans">
-                    Upload your content and I'll analyze it against trending formats, suggest improvements, and help you create viral-ready posts.
+                    I'll help you build your content profile by understanding your target audience, product, platform, and desired vibe.
                   </p>
+                  
+                  {/* Profile Progress Indicator */}
+                  {confidenceScores.overall > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-semibold text-foreground font-sans">Profile Completeness</span>
+                        <span className="text-sm font-bold text-primary font-sans">{Math.round(confidenceScores.overall)}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-primary transition-all duration-500"
+                          style={{ width: `${confidenceScores.overall}%` }}
+                        />
+                      </div>
+                      {confidenceScores.overall >= 60 && (
+                        <p className="text-xs text-green-600 font-semibold font-sans">✅ Profile Complete!</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
