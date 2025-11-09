@@ -161,15 +161,18 @@ backend:
 
   - task: "Video Upload API Endpoints"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/routers/videos.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented video upload endpoints: POST /api/videos/upload-chunk, GET /api/videos/list/{session_id}, GET /api/videos/{video_id}, POST /api/videos/analyze, DELETE /api/videos/{video_id}. All integrated with MongoDB. Needs testing."
+      - working: true
+        agent: "testing"
+        comment: "All video API endpoints working correctly. Upload-chunk handles chunked uploads, list/get endpoints retrieve video metadata from MongoDB, analyze endpoint integrates with AI service and generates suggestions. Fixed issue where suggestions were missing IDs by adding proper ID generation in analysis endpoint."
 
   - task: "Suggestions Management API"
     implemented: true
