@@ -871,7 +871,158 @@ export const WorkspaceEnhanced = () => {
               </p>
             </CardContent>
           </Card>
-        </div>
+            </div>
+
+            {/* Right Side - Video Editor Panel */}
+            <div className="w-[45%] space-y-6 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto">
+              {/* Video Timeline Editor */}
+              {uploadedVideo && (
+                <div className="animate-slide-up">
+                  <h3 className="text-lg font-semibold text-foreground font-display flex items-center gap-2 mb-3">
+                    <Scissors className="w-5 h-5 text-primary" />
+                    Video Editor Timeline
+                  </h3>
+                  <VideoTimeline
+                    videoUrl={uploadedVideo.url}
+                    timestampSuggestions={currentSuggestions.filter(s => s.type === 'timestamp')}
+                  />
+                </div>
+              )}
+
+              {/* AI Suggestions Display */}
+              {currentSuggestions.length > 0 && (
+                <div className="space-y-3 animate-slide-up">
+                  <h3 className="text-lg font-semibold text-foreground font-display flex items-center gap-2">
+                    <Wand2 className="w-5 h-5 text-primary" />
+                    Director's Suggestions
+                  </h3>
+                  {currentSuggestions.map((suggestion, idx) => (
+                    <Card 
+                      key={suggestion.id} 
+                      className={`border-border/50 shadow-md bg-card/95 backdrop-blur-sm card-lift ${
+                        suggestion.status === 'accepted' ? 'border-green-500/50 bg-green-50/10' :
+                        suggestion.status === 'rejected' ? 'opacity-50' : ''
+                      }`}
+                    >
+                      <CardContent className="pt-4 pb-4">
+                        <div className="flex items-start gap-3">
+                          <div className="text-3xl flex-shrink-0">{getSuggestionIcon(suggestion.type)}</div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-foreground font-display">{suggestion.title}</h4>
+                                <Badge variant="secondary" className="mt-1 text-xs">{suggestion.type}</Badge>
+                              </div>
+                              {suggestion.status === 'pending' && (
+                                <div className="flex gap-1">
+                                  <Button
+                                    size="sm"
+                                    onClick={() => handleSuggestionAccept(suggestion)}
+                                    className="bg-green-500 hover:bg-green-600 text-white"
+                                  >
+                                    <ThumbsUp className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleSuggestionReject(suggestion)}
+                                    className="border-destructive/50 text-destructive hover:bg-destructive/10"
+                                  >
+                                    <ThumbsDown className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              )}
+                              {suggestion.status === 'accepted' && (
+                                <Badge className="bg-green-500/10 text-green-700 border-green-500/30">
+                                  <CheckCircle className="w-3 h-3 mr-1" />
+                                  Accepted
+                                </Badge>
+                              )}
+                              {suggestion.status === 'rejected' && (
+                                <Badge variant="secondary" className="bg-muted">
+                                  <XCircle className="w-3 h-3 mr-1" />
+                                  Rejected
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2 font-sans">{suggestion.description}</p>
+                            
+                            {/* Special display for example videos */}
+                            {suggestion.type === 'example_video' && suggestion.video_url && (
+                              <div className="mb-3 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Badge className="bg-primary/10 text-primary border-primary/30 text-xs">
+                                    Example Video
+                                  </Badge>
+                                  {suggestion.metrics && (
+                                    <Badge variant="outline" className="text-xs">
+                                      {suggestion.metrics}
+                                    </Badge>
+                                  )}
+                                </div>
+                                {suggestion.creator && (
+                                  <p className="text-sm font-semibold text-foreground mb-1">
+                                    By: {suggestion.creator}
+                                  </p>
+                                )}
+                                <a
+                                  href={suggestion.video_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm text-primary hover:text-primary/80 underline break-all"
+                                >
+                                  🔗 Watch on TikTok
+                                </a>
+                              </div>
+                            )}
+                            
+                            {/* Special display for audio/BGM */}
+                            {(suggestion.type === 'audio' || suggestion.type === 'bgm') && (
+                              <div className="mb-3 p-3 bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200/50 dark:border-purple-800/50 rounded-lg">
+                                <Badge className="bg-purple-100 text-purple-700 border-purple-300 text-xs mb-2">
+                                  🎵 Trending Audio
+                                </Badge>
+                              </div>
+                            )}
+                            
+                            <div className="bg-muted/30 rounded-lg p-3 mb-2">
+                              <p className="text-sm text-foreground font-sans leading-relaxed">{suggestion.content}</p>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs text-muted-foreground italic font-sans">💡 {suggestion.reasoning}</p>
+                              <Badge variant="outline" className="text-xs">
+                                {Math.round(suggestion.confidence_score * 100)}% confidence
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {/* Empty state when no video */}
+              {!uploadedVideo && (
+                <Card className="border-border/50 shadow-lg bg-card/95 backdrop-blur-sm">
+                  <CardContent className="pt-12 pb-12 text-center">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center">
+                        <Video className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground font-display mb-2">Upload Your Footage</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Video editor will appear here once you upload
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
