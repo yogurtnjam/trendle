@@ -521,8 +521,8 @@ export const WorkspaceEnhanced = () => {
             {/* Left Side - Chat */}
             <div className="flex-1 space-y-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
 
-          {/* Video Upload Area */}
-          {!uploadedVideo && (
+              {/* Video Upload Area */}
+              {!uploadedVideo && (
             <Card className="border-border/50 shadow-xl bg-card/95 backdrop-blur-sm animate-slide-up">
               <CardContent className="pt-6">
                 <div
