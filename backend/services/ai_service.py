@@ -174,12 +174,12 @@ Respond in this JSON format:
   ]
 }}
 
-Provide 8-12 diverse suggestions including:
+Provide 10-14 diverse suggestions including:
+- 4-6 timestamp-based CUT suggestions (pauses, filler words, pacing issues) - PRIORITY
 - 2-3 audio/BGM recommendations (trending sounds that match the vibe)
 - 2-3 example videos (similar successful content with analysis)
-- 2-3 timestamp-based editing suggestions (cuts, trims, text overlays at specific times)
-- 2-3 script/voiceover improvements
-- 1-2 shot composition suggestions
+- 1-2 "what to film next" suggestions (additional shots/content they should capture)
+- 1-2 script/voiceover improvements
 """
         return prompt
     
