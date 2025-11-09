@@ -544,7 +544,9 @@ export const WorkspaceEnhanced = () => {
 
                 {message.role === 'user' && (
                   <Avatar className="w-10 h-10 border-2 border-primary/20 flex-shrink-0">
-                    <AvatarFallback className="bg-muted text-muted-foreground font-semibold">U</AvatarFallback>
+                    <AvatarFallback className="bg-muted text-muted-foreground">
+                      <User className="w-5 h-5" />
+                    </AvatarFallback>
                   </Avatar>
                 )}
               </div>
