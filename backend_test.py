@@ -16,8 +16,7 @@ BACKEND_URL = "https://trend-workspace.preview.emergentagent.com/api"
 
 class DirectorSystemTester:
     def __init__(self):
-        self.session_id = None
-        self.conversation_history = []
+        self.project_id = None
         self.test_results = []
         
     def log_test(self, test_name, success, details):
