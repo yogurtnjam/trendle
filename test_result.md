@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Build a LangChain ProfileAgent using Claude Sonnet 4.5 with Emergent LLM key. The agent should use custom tools (calculate_confidence_score, check_confidence_score, save_profile_data, get_profile_data, generate_summary) to extract user profile information (target_customer, product, audience, platform, vibes) through conversation. Store session data in MongoDB and provide API endpoints for chat interaction."
+user_problem_statement: "Build a LangGraph Director system with 6 specialized agents (Director, Format Matcher, Script Planner, Recording Guide, Video Editor, Export) using Claude Sonnet 4.5. The system guides users through creating viral videos from concept to final export. Includes FFMPEG tools for video editing (merge, cut, subtitles, transitions, resize, audio adjustment), viral format database (YC demos, Cluely style, educational tutorials, before/after transformations), and multi-step workflow orchestration. Users describe their video goal, get matched with a viral format, receive shot-by-shot recording instructions, upload segments, have them automatically edited, and export optimized videos for their target platform."
 
 frontend:
   - task: "Landing Page Navigation"
