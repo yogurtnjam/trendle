@@ -389,7 +389,9 @@ export const WorkspaceEnhanced = () => {
                 AI Workspace
               </Badge>
               <Avatar className="w-9 h-9 border-2 border-primary/20">
-                <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">U</AvatarFallback>
+                <AvatarFallback className="bg-gradient-primary text-primary-foreground">
+                  <User className="w-5 h-5" />
+                </AvatarFallback>
               </Avatar>
             </div>
           </div>
