@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { 
   Sparkles, Upload, X, Send, Video, CheckCircle, XCircle, 
   TrendingUp, Wand2, Zap, Loader2, AlertCircle, ThumbsUp, ThumbsDown,
-  Clock, Scissors
+  Clock, Scissors, User, Film, Clapperboard
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
