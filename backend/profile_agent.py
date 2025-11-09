@@ -107,7 +107,6 @@ async def check_confidence_score(session_id: str, db: AsyncIOMotorDatabase) -> D
     }
 
 
-@tool
 async def save_profile_data(
     session_id: str,
     db: AsyncIOMotorDatabase,
