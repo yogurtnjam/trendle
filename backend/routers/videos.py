@@ -149,7 +149,9 @@ async def analyze_video(request: VideoAnalysisRequest):
                 "reasoning": suggestion.get("reasoning", ""),
                 "confidence_score": suggestion.get("confidence_score", 0.5),
                 "status": "pending",
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.utcnow().isoformat(),
+                "timestamp": suggestion.get("timestamp"),  # For video editing
+                "action": suggestion.get("action")  # CUT, TRIM, ADD_TEXT, etc.
             }
             suggestions_with_ids.append(suggestion_with_id)
         
