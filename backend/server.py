@@ -171,6 +171,157 @@ async def get_chat_session(session_id: str):
     
     return session
 
+# Director Workflow Endpoints
+@api_router.post("/director/project", response_model=DirectorResponse)
+async def create_director_project(input: DirectorProjectCreate):
+    """Create a new video project with the Director workflow"""
+    try:
+        project_id = str(uuid.uuid4())
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        
+        if not api_key:
+            raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+        
+        # Initialize Director workflow
+        workflow = DirectorWorkflow(db=db, api_key=api_key)
+        
+        # Create initial state
+        initial_state: DirectorState = {
+            "messages": [HumanMessage(content=input.user_goal)],
+            "project_id": project_id,
+            "user_goal": input.user_goal,
+            "product_type": input.product_type,
+            "target_platform": input.target_platform,
+            "matched_format": None,
+            "shot_list": None,
+            "uploaded_segments": [],
+            "edited_video_path": None,
+            "current_step": "initial",
+            "user_input_needed": False,
+            "next_instruction": ""
+        }
+        
+        # Run the workflow
+        result = await workflow.graph.ainvoke(initial_state)
+        
+        # Extract latest AI message
+        ai_messages = [m for m in result["messages"] if hasattr(m, 'content')]
+        latest_message = ai_messages[-1].content if ai_messages else "Project created successfully!"
+        
+        return DirectorResponse(
+            project_id=project_id,
+            message=latest_message,
+            current_step=result.get("current_step", "initial"),
+            shot_list=result.get("shot_list"),
+            matched_format=result.get("matched_format"),
+            user_input_needed=result.get("user_input_needed", False)
+        )
+    except Exception as e:
+        logger.error(f"Error creating director project: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/director/message", response_model=DirectorResponse)
+async def send_director_message(input: DirectorMessageInput):
+    """Send a message in an existing Director project"""
+    try:
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        
+        if not api_key:
+            raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
+        
+        # Load project state from database
+        project = await db.video_projects.find_one({"project_id": input.project_id}, {"_id": 0})
+        
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Initialize workflow
+        workflow = DirectorWorkflow(db=db, api_key=api_key)
+        
+        # Reconstruct state from project data
+        state: DirectorState = {
+            "messages": project.get("messages", []) + [HumanMessage(content=input.message)],
+            "project_id": input.project_id,
+            "user_goal": project.get("user_goal", ""),
+            "product_type": project.get("product_type", "general"),
+            "target_platform": project.get("target_platform", "YouTube"),
+            "matched_format": project.get("matched_format"),
+            "shot_list": project.get("shot_list"),
+            "uploaded_segments": project.get("uploaded_segments", []),
+            "edited_video_path": project.get("edited_video_path"),
+            "current_step": project.get("current_step", "initial"),
+            "user_input_needed": False,
+            "next_instruction": ""
+        }
+        
+        # Run workflow
+        result = await workflow.graph.ainvoke(state)
+        
+        # Extract latest AI message
+        ai_messages = [m for m in result["messages"] if hasattr(m, 'content')]
+        latest_message = ai_messages[-1].content if ai_messages else "Processing..."
+        
+        return DirectorResponse(
+            project_id=input.project_id,
+            message=latest_message,
+            current_step=result.get("current_step", "initial"),
+            shot_list=result.get("shot_list"),
+            matched_format=result.get("matched_format"),
+            user_input_needed=result.get("user_input_needed", False)
+        )
+    except Exception as e:
+        logger.error(f"Error processing director message: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/director/upload-segment")
+async def upload_video_segment(
+    project_id: str,
+    segment_name: str,
+    file: UploadFile = File(...)
+):
+    """Upload a video segment for a project"""
+    try:
+        # Create upload directory if it doesn't exist
+        upload_dir = Path("/app/backend/uploads")
+        upload_dir.mkdir(exist_ok=True)
+        
+        # Save file
+        file_path = upload_dir / f"{project_id}_{segment_name}_{file.filename}"
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Update project in database
+        segment_data = {
+            "segment_name": segment_name,
+            "file_path": str(file_path),
+            "filename": file.filename,
+            "uploaded_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.video_projects.update_one(
+            {"project_id": project_id},
+            {"$push": {"uploaded_segments": segment_data}}
+        )
+        
+        return {
+            "success": True,
+            "message": f"Segment '{segment_name}' uploaded successfully",
+            "file_path": str(file_path)
+        }
+    except Exception as e:
+        logger.error(f"Error uploading segment: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/director/project/{project_id}")
+async def get_director_project(project_id: str):
+    """Get project details"""
+    project = await db.video_projects.find_one({"project_id": project_id}, {"_id": 0})
+    
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    return project
+
 # Include the router in the main app
 app.include_router(api_router)
 
