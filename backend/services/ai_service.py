@@ -144,10 +144,11 @@ Act as their personal director and analyze this video with actionable editing gu
 - Include key metrics if available (views, engagement rate)
 - Explain how user can apply similar techniques
 
-**FOR TIMESTAMP SUGGESTIONS:**
+**FOR TIMESTAMP/CUT SUGGESTIONS (CRITICAL - GENERATE 4-6 OF THESE):**
 - Include "timestamp" field with time in seconds (e.g., 5.0, 12.5, 30.0)
-- Include "action" field: "CUT", "TRIM", "ADD_TEXT", "TRANSITION", "EMPHASIS"
-- Be precise about what edit to make at that moment
+- Include "action" field: "CUT" (remove this), "TRIM" (shorten), "CUT_FILLER" (remove filler word), "CUT_PAUSE" (remove awkward silence)
+- Be specific: "Cut 'um' at 12.5s", "Remove 3-second pause at 28.0s", "Trim rambling section 15-18s"
+- Assume there are pauses and filler words in raw footage - actively look for them
 
 Respond in this JSON format:
 {{
