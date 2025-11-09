@@ -176,15 +176,18 @@ backend:
 
   - task: "Suggestions Management API"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/routers/suggestions.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented suggestion accept/reject workflow. Endpoints: GET /api/suggestions/{video_id}, POST /api/suggestions/action, GET /api/suggestions/status/{video_id}. MongoDB integration complete. Needs testing."
+      - working: true
+        agent: "testing"
+        comment: "Suggestions API fully functional. GET endpoints retrieve suggestions from MongoDB, status endpoint provides summary of accepted/rejected/pending suggestions. Accept/reject workflow working correctly with proper status updates and feedback storage. Fixed dependency on video analysis endpoint to generate suggestions with proper IDs."
 
   - task: "Chat API with AI Context"
     implemented: true
