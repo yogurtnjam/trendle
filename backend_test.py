@@ -124,25 +124,24 @@ class DirectorSystemTester:
             self.log_test("Create Video Project", False, f"Unexpected error: {str(e)}")
             return False
     
-    def test_2_send_first_message(self):
-        """Test 2: Send First Message to ProfileAgent"""
-        print("=== Test 2: Send First Message to ProfileAgent ===")
+    def test_2_send_followup_message(self):
+        """Test 2: Send Follow-up Message - Tests Director workflow progression"""
+        print("=== Test 2: Send Follow-up Message ===")
         
-        if not self.session_id:
-            self.log_test("Send First Message", False, "No session_id available from previous test")
+        if not self.project_id:
+            self.log_test("Send Follow-up Message", False, "No project_id available from previous test")
             return False
         
         try:
-            # Test data - realistic message about language learning app
+            # Test data - user confirms format choice
             payload = {
-                "session_id": self.session_id,
-                "message": "I'm building a language learning app for working professionals",
-                "conversation_history": []
+                "project_id": self.project_id,
+                "message": "Yes, let's proceed with that format"
             }
             
             # Make request
             response = requests.post(
-                f"{BACKEND_URL}/chat/message",
+                f"{BACKEND_URL}/director/message",
                 json=payload,
                 headers={"Content-Type": "application/json"},
                 timeout=60  # Longer timeout for LLM processing
@@ -150,7 +149,7 @@ class DirectorSystemTester:
             
             # Check status code
             if response.status_code != 200:
-                self.log_test("Send First Message", False, 
+                self.log_test("Send Follow-up Message", False, 
                             f"Expected status 200, got {response.status_code}. Response: {response.text}")
                 return False
             
@@ -158,58 +157,64 @@ class DirectorSystemTester:
             data = response.json()
             
             # Validate response structure
-            required_fields = ["session_id", "message", "confidence_scores"]
+            required_fields = ["project_id", "message", "current_step"]
             missing_fields = [field for field in required_fields if field not in data]
             if missing_fields:
-                self.log_test("Send First Message", False, 
+                self.log_test("Send Follow-up Message", False, 
                             f"Missing required fields: {missing_fields}. Response: {data}")
                 return False
             
-            # Validate session_id matches
-            if data["session_id"] != self.session_id:
-                self.log_test("Send First Message", False, 
-                            f"Session ID mismatch. Expected: {self.session_id}, Got: {data['session_id']}")
+            # Validate project_id matches
+            if data["project_id"] != self.project_id:
+                self.log_test("Send Follow-up Message", False, 
+                            f"Project ID mismatch. Expected: {self.project_id}, Got: {data['project_id']}")
                 return False
             
-            # Validate agent response exists and is meaningful
+            # Validate shot_list is generated
+            if "shot_list" not in data or not data["shot_list"]:
+                self.log_test("Send Follow-up Message", False, 
+                            f"shot_list should be generated after format confirmation")
+                return False
+            
+            shot_list = data["shot_list"]
+            if not isinstance(shot_list, list) or len(shot_list) < 3:
+                self.log_test("Send Follow-up Message", False, 
+                            f"shot_list should be a list with at least 3 segments, got: {len(shot_list) if isinstance(shot_list, list) else 'not a list'}")
+                return False
+            
+            # Validate shot_list structure
+            for i, shot in enumerate(shot_list):
+                required_shot_fields = ["segment_name", "duration", "script", "visual_guide"]
+                missing_shot_fields = [field for field in required_shot_fields if field not in shot]
+                if missing_shot_fields:
+                    self.log_test("Send Follow-up Message", False, 
+                                f"Shot {i+1} missing fields: {missing_shot_fields}")
+                    return False
+            
+            # Validate current_step advancement
+            if data["current_step"] not in ["script_planned", "recording_guide"]:
+                self.log_test("Send Follow-up Message", False, 
+                            f"Expected current_step to advance to script_planned or recording_guide, got: {data['current_step']}")
+                return False
+            
+            # Validate message describes shot list
             agent_message = data["message"]
-            if not agent_message or len(agent_message.strip()) < 10:
-                self.log_test("Send First Message", False, 
-                            f"Agent response too short or empty: '{agent_message}'")
+            message_lower = agent_message.lower()
+            shot_keywords = ["shot", "segment", "script", "record", "film"]
+            if not any(keyword in message_lower for keyword in shot_keywords):
+                self.log_test("Send Follow-up Message", False, 
+                            f"Agent message should describe shot list: '{agent_message}'")
                 return False
             
-            # Validate confidence_scores structure
-            confidence_scores = data["confidence_scores"]
-            expected_fields = ["target_customer", "product", "audience", "platform", "vibes", "overall"]
-            missing_confidence_fields = [field for field in expected_fields if field not in confidence_scores]
-            if missing_confidence_fields:
-                self.log_test("Send First Message", False, 
-                            f"Missing confidence score fields: {missing_confidence_fields}")
-                return False
-            
-            # Check that agent asks strategic questions (should mention platform and vibes)
-            agent_lower = agent_message.lower()
-            strategic_keywords = ["platform", "vibe", "style", "tone", "tiktok", "instagram", "professional", "casual"]
-            if not any(keyword in agent_lower for keyword in strategic_keywords):
-                self.log_test("Send First Message", False, 
-                            f"Agent response doesn't seem to ask strategic follow-up questions about platform/vibes: '{agent_message}'")
-                return False
-            
-            # Store conversation history for next test
-            self.conversation_history = [
-                {"role": "user", "content": payload["message"]},
-                {"role": "assistant", "content": agent_message}
-            ]
-            
-            self.log_test("Send First Message", True, 
-                        f"Agent responded appropriately. Confidence scores: {confidence_scores}")
+            self.log_test("Send Follow-up Message", True, 
+                        f"Shot list generated with {len(shot_list)} segments. Current step: {data['current_step']}")
             return True
             
         except requests.exceptions.RequestException as e:
-            self.log_test("Send First Message", False, f"Request failed: {str(e)}")
+            self.log_test("Send Follow-up Message", False, f"Request failed: {str(e)}")
             return False
         except Exception as e:
-            self.log_test("Send First Message", False, f"Unexpected error: {str(e)}")
+            self.log_test("Send Follow-up Message", False, f"Unexpected error: {str(e)}")
             return False
     
     def test_3_send_followup_message(self):
