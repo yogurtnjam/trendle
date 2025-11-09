@@ -315,6 +315,29 @@ code {
     animation: marker-sweep var(--transition-marker) ease-out forwards;
 }
 
+.marker-highlight-small {
+    position: relative;
+    display: inline-block;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.4em;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.marker-highlight-small::after {
+    content: '';
+    position: absolute;
+    bottom: 0.15em;
+    left: -0.15em;
+    right: -0.15em;
+    height: 0.35em;
+    background: hsl(var(--accent));
+    opacity: 0.5;
+    z-index: -1;
+    transform-origin: left;
+    width: 100%;
+}
+
 /* Scribble Annotation */
 .scribble-note {
     font-family: 'Pinyon Script', cursive;
