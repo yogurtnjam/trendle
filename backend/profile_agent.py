@@ -76,7 +76,6 @@ async def calculate_confidence_score(session_id: str, db: AsyncIOMotorDatabase) 
     return scores
 
 
-@tool
 async def check_confidence_score(session_id: str, db: AsyncIOMotorDatabase) -> Dict[str, Any]:
     """
     Retrieves the current confidence scores from MongoDB for the session.
