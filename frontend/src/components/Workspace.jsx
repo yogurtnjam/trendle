@@ -66,9 +66,9 @@ export const Workspace = () => {
   }, [messages]);
 
   const quickPrompts = [
-    { icon: <TrendingUp className="w-4 h-4" />, text: 'Analyze trending formats', color: 'bg-primary/10 text-primary border-primary/20' },
-    { icon: <Wand2 className="w-4 h-4" />, text: 'Suggest hooks for this video', color: 'bg-secondary/10 text-secondary border-secondary/20' },
-    { icon: <Zap className="w-4 h-4" />, text: 'Generate captions & hashtags', color: 'bg-accent/20 text-foreground border-accent/30' },
+    { icon: <Target className="w-4 h-4" />, text: 'I\'m building a tech product for Gen Z', color: 'bg-primary/10 text-primary border-primary/20' },
+    { icon: <Rocket className="w-4 h-4" />, text: 'Creating content for TikTok and Instagram', color: 'bg-secondary/10 text-secondary border-secondary/20' },
+    { icon: <Sparkles className="w-4 h-4" />, text: 'Professional but fun vibe', color: 'bg-accent/20 text-foreground border-accent/30' },
   ];
 
   const handleFileSelect = (e) => {
