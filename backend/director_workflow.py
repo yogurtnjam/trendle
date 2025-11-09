@@ -95,6 +95,10 @@ class DirectorWorkflow:
     def route_from_director(self, state: DirectorState) -> str:
         """Determine which agent to route to next"""
         current_step = state.get("current_step", "initial")
+        messages = state.get("messages", [])
+        
+        # Check if there's a new user message that needs processing
+        has_new_user_message = any(isinstance(m, HumanMessage) for m in messages[-2:])
         
         # For initial project creation, go through format matching and script planning
         if current_step == "initial":
@@ -102,7 +106,9 @@ class DirectorWorkflow:
         elif current_step == "format_matched":
             return "script_planner"
         elif current_step == "script_planned":
-            # Stop here for user interaction - they need to upload segments
+            # If user sent a new message, provide recording guidance
+            if has_new_user_message:
+                return "recording_guide"
             return "end"
         elif current_step == "segments_uploaded":
             return "video_editor"
