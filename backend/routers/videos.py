@@ -137,13 +137,29 @@ async def analyze_video(request: VideoAnalysisRequest):
         from schemas.suggestion import VideoSuggestions, SuggestionItem
         import uuid
         
+        # Add IDs to individual suggestions
+        suggestions_with_ids = []
+        for suggestion in analysis_result["suggestions"]:
+            suggestion_with_id = {
+                "id": str(uuid.uuid4()),
+                "type": suggestion.get("type", "unknown"),
+                "title": suggestion.get("title", ""),
+                "description": suggestion.get("description", ""),
+                "content": suggestion.get("content", ""),
+                "reasoning": suggestion.get("reasoning", ""),
+                "confidence_score": suggestion.get("confidence_score", 0.5),
+                "status": "pending",
+                "created_at": datetime.utcnow().isoformat()
+            }
+            suggestions_with_ids.append(suggestion_with_id)
+        
         suggestions_doc = {
             "id": str(uuid.uuid4()),
             "video_id": request.video_id,
             "session_id": video["session_id"],
             "trending_format_used": analysis_result["recommended_format"].get("name", "Unknown"),
             "format_description": analysis_result.get("format_reasoning", ""),
-            "suggestions": analysis_result["suggestions"],
+            "suggestions": suggestions_with_ids,
             "created_at": datetime.utcnow().isoformat()
         }
         
