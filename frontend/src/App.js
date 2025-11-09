@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { LoginPage } from "./components/LoginPage";
 import { LandingPage } from "./components/LandingPage";
-import { Workspace } from "./components/Workspace";
+import { WorkspaceEnhanced } from "./components/WorkspaceEnhanced";
 import { Toaster } from "./components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -35,7 +35,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/workspace" element={<Workspace />} />
+          <Route path="/workspace" element={<WorkspaceEnhanced />} />
         </Routes>
       </BrowserRouter>
     </div>

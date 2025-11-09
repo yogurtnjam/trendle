@@ -52,10 +52,23 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle flex items-center justify-center p-4 relative overflow-hidden gradient-bg-dynamic">
-      {/* Dynamic gradient orbs */}
-      <div className="gradient-orb-1"></div>
-      <div className="gradient-orb-2"></div>
+    <div className="min-h-screen relative overflow-hidden gradient-bg-dynamic">
+      {/* Navigation */}
+      <nav className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <button onClick={() => navigate('/')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <span className="text-5xl font-logo font-bold text-foreground">Trendle</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="flex items-center justify-center p-4 min-h-[calc(100vh-4rem)] bg-gradient-subtle">
+        {/* Dynamic gradient orbs */}
+        <div className="gradient-orb-1"></div>
+        <div className="gradient-orb-2"></div>
       
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -285,6 +298,7 @@ export const LoginPage = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
